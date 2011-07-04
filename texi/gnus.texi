@@ -1408,8 +1408,10 @@ not stored in the @file{.newsrc} file.
 You can turn off writing the @file{.newsrc} file by setting
 @code{gnus-save-newsrc-file} to @code{nil}, which means you can delete
 the file and save some space, as well as exiting from Gnus faster.
-However, this will make it impossible to use other newsreaders than
-Gnus.  But hey, who would want to, right?  Similarly, setting
+However, Gnus and other newsreaders will not maintain a synchronized
+idea of which groups you're subscribed to or articles you've read.
+But hey, who would want to use another newsreader, right?
+Similarly, setting
 @code{gnus-read-newsrc-file} to @code{nil} makes Gnus ignore the
 @file{.newsrc} file and any @file{.newsrc-SERVER} files, which can be
 convenient if you use a different news reader occasionally, and you
@@ -28857,15 +28859,15 @@ sizes a bit if you are running out of space.
 
 @item gnus-save-newsrc-file
 If this is @code{nil}, Gnus will never save @file{.newsrc}---it will
-only save @file{.newsrc.eld}.  This means that you will not be able to
-use any other newsreaders than Gnus.  This variable is @code{t} by
-default.
+only save @file{.newsrc.eld}.  Other newsreaders will have no way to
+stay in synch with changes made in Gnus (e.g. to group subscriptions and
+article marks).  This variable is @code{t} by default.
 
 @item gnus-read-newsrc-file
 If this is @code{nil}, Gnus will never read @file{.newsrc}---it will
-only read @file{.newsrc.eld}.  This means that you will not be able to
-use any other newsreaders than Gnus.  This variable is @code{t} by
-default.
+only read @file{.newsrc.eld}.  Gnus will have no way to stay in synch
+with changes made in other newsreaders (e.g. to group subscriptions and
+article marks).  This variable is @code{t} by default.
 
 @item gnus-save-killed-list
 If this is @code{nil}, Gnus will not save the list of dead groups.  You
