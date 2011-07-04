@@ -218,9 +218,10 @@ groups."
   "*Non-nil means that Gnus will read the `.newsrc' file.
 Gnus always reads its own startup file, which is called
 \".newsrc.eld\".  The file called \".newsrc\" is in a format that can
-be readily understood by other newsreaders.  If you don't plan on
-using other newsreaders, set this variable to nil to save some time on
-entry."
+be readily understood by other newsreaders.  If you don't
+care whether Gnus can stay in synch with changes made in other
+newsreaders (e.g. to group subscriptions and article marks), set
+this variable to nil to save some time on entry."
   :version "21.1"
   :group 'gnus-newsrc
   :type 'boolean)
@@ -229,9 +230,10 @@ entry."
   "*Non-nil means that Gnus will save the `.newsrc' file.
 Gnus always saves its own startup file, which is called
 \".newsrc.eld\".  The file called \".newsrc\" is in a format that can
-be readily understood by other newsreaders.  If you don't plan on
-using other newsreaders, set this variable to nil to save some time on
-exit."
+be readily understood by other newsreaders.  If you don't
+care whether other newsreaders can stay in synch with changes
+made in Gnus (e.g. to group subscriptions and article marks), set
+this variable to nil to save some time on exit."
   :group 'gnus-newsrc
   :type 'boolean)
 
