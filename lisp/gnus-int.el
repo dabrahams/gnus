@@ -531,6 +531,57 @@ If BUFFER, insert the article in that group."
 	     header
 	     (gnus-group-real-name group))))
 
+;; largely based on nnir-warp-to-article
+(defun gnus-try-warping-via-registry ()
+  "Attempt to warp to the current article's source group based on
+data stored in the registry."
+  (interactive)
+  (when (gnus-summary-article-header)
+    (let* ((message-id (mail-header-id (gnus-summary-article-header)))
+           ;; Retrieve the message's group(s) from the registry
+           (groups (gnus-registry-get-id-key message-id 'group))
+           ;; If starting from an ephemeral group, this describes
+           ;; how to restore the window configuration
+           (quit-config
+            (gnus-ephemeral-group-p gnus-newsgroup-name)))
+
+      (when groups
+        ;; TODO: should we be iterating all the groups?  Perhaps at
+        ;; least until the group isn't the same as the current group?
+        (let ((group (car groups)))
+
+          ;; first exit from any ephemeral summary buffer.
+          (when quit-config
+            (gnus-summary-exit)
+            ;; and if the ephemeral summary buffer in turn came from another
+            ;; summary buffer we have to clean that summary up too.
+            (when (eq (cdr quit-config) 'summary)
+              (gnus-summary-exit)))
+
+          ;; save up the new group's display parameter, if any, so we
+          ;; can replace it temporarily with zero.  No need to build
+          ;; up a large list of articles just for warping purposes.
+          (let ((saved-display
+                 (gnus-group-get-parameter group 'display :allow-list)))
+            (gnus-group-set-parameter group 'display 0)
+
+            (unwind-protect
+                (gnus-summary-read-group-1
+                 group (not :show-all) :no-article (not :kill-buffer)
+                 ;; The magic combination of no-display non-nil and
+                 ;; this dummy list of articles to select somehow
+                 ;; makes it possible to open a group with no articles
+                 ;; in it.
+                 :no-display '(-1); select-articles
+                 )
+
+              ;; Restore the new group's display parameter
+              (gnus-group-set-parameter group 'display saved-display)))
+
+          ;; Now fetch/insert the message and select it.
+          (gnus-summary-select-article
+           nil nil nil (gnus-summary-insert-subject message-id)))))))
+
 (defun gnus-warp-to-article ()
   "Warps from an article in a virtual group to the article in its
 real group. Does nothing on a real group."
