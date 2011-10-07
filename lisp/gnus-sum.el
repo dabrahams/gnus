@@ -6609,9 +6609,9 @@ too, instead of trying to fetch new headers."
       ;; article if ID is a number -- so that the next `P' or `N'
       ;; command will fetch the previous (or next) article even
       ;; if the one we tried to fetch this time has been canceled.
-      (when (> number gnus-newsgroup-end)
+      (unless (and gnus-newsgroup-end (< number gnus-newsgroup-end))
 	(setq gnus-newsgroup-end number))
-      (when (< number gnus-newsgroup-begin)
+      (unless (and gnus-newsgroup-begin (> number gnus-newsgroup-begin))
 	(setq gnus-newsgroup-begin number))
       (setq gnus-newsgroup-unselected
 	    (delq number gnus-newsgroup-unselected)))
