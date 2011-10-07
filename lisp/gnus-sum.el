@@ -12384,6 +12384,12 @@ If REVERSE, save parts that do not match TYPE."
 		(not (setq header (car (gnus-get-newsgroup-headers nil t)))))
 	    ()				; Malformed head.
 	  (unless (gnus-summary-article-sparse-p (mail-header-number header))
+            (when (bound-and-true-p gnus-registry-install)
+              (gnus-registry-handle-action
+               (mail-header-id header) nil
+               (gnus-group-prefixed-name (car where) gnus-override-method)
+               (mail-header-subject header)
+               (mail-header-from header)))
 	    (when (and (stringp id)
 		       (or
 			(not (string= (gnus-group-real-name group)
