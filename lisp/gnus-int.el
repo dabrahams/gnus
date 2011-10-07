@@ -588,9 +588,11 @@ real group. Does nothing on a real group."
   (interactive)
   (let ((gnus-command-method
 	 (gnus-find-method-for-group gnus-newsgroup-name)))
-    (when (gnus-check-backend-function
-	   'warp-to-article (car gnus-command-method))
-      (funcall (gnus-get-function gnus-command-method 'warp-to-article)))))
+    (or
+     (when (gnus-check-backend-function
+            'warp-to-article (car gnus-command-method))
+       (funcall (gnus-get-function gnus-command-method 'warp-to-article)))
+     (gnus-try-warping-via-registry))))
 
 (defun gnus-request-head (article group)
   "Request the head of ARTICLE in GROUP."
