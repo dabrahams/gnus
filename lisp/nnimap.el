@@ -1991,9 +1991,10 @@ textual parts.")
 
 (defun nnimap-make-thread-query (header)
   (let* ((id  (mail-header-id header))
-	 (refs (split-string
+	 (refs1 (split-string
 		(or (mail-header-references header)
 		    "")))
+         (refs (nbutlast refs1 (- (length refs1) 2)))
 	 (value
 	  (format
 	   "(OR HEADER REFERENCES %S HEADER Message-Id %S)"
