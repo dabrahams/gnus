@@ -130,7 +130,7 @@ textual parts.")
 (defcustom nnimap-request-articles-find-limit nil
   "Limit the number of articles to look for after moving an article."
   :type 'integer
-  :version "24.2"
+  :version "24.3"
   :group 'nnimap)
 
 (defvar nnimap-process nil)
@@ -1907,15 +1907,6 @@ if READ-ONLY is set, send EXAMINE rather than SELECT to the server."
 	(unless (eql (following-char) ?*)
 	  (forward-line 1)))
       (buffer-substring (point) end))))
-
-(defun nnimap-get-responses (sequences)
-  (let (responses)
-    (dolist (sequence sequences)
-      (goto-char (point-min))
-      (when (re-search-forward (format "^%d " sequence) nil t)
-	(push (list sequence (nnimap-parse-response))
-	      responses)))
-    responses))
 
 (defvar nnimap-incoming-split-list nil)
 
